@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Sorts+Mill+Goudy:ital@0;1&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sorts+Mill+Goudy:ital@0;1&display=swap" rel="stylesheet">
+  <title>Directional Emissions Tool</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      color: #1a1a1a;
+      background: #f8f9fa;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Sorts Mill Goudy', Georgia, serif;
+    }
+    .page-container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    
+    .hero {
+      text-align: center;
+      padding: 60px 20px;
+      background: linear-gradient(135deg, #2d5016 0%, #1a3310 100%);
+      color: white;
+      border-radius: 8px;
+      margin-bottom: 40px;
+    }
+    
+    .hero h1 { font-size: 3rem; margin-bottom: 20px; font-weight: 700; }
+    .tagline { font-size: 1.5rem; margin-bottom: 30px; }
+    
+    .btn-primary {
+      background: #ffc107;
+      color: #1a1a1a;
+      padding: 15px 40px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: transform 0.2s, background 0.2s;
+    }
+    
+    .btn-primary:hover { 
+      transform: translateY(-2px); 
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      background: #f0b000;
+    }
+    
+    .info-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-bottom: 60px;
+    }
+    
+    .info-card {
+      padding: 30px;
+      background: white;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .info-card h3 { color: #2d5016; font-size: 1.8rem; margin-bottom: 15px; }
+    
+    .hidden { display: none !important; }
+    
+    /* Form Wizard */
+    .wizard-container { max-width: 800px; margin: 0 auto; padding: 20px; }
+    
+    .warning-banner {
+      background: #ffc107;
+      color: #1a1a1a;
+      padding: 12px 20px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      border: 1px solid #f0b000;
+      font-weight: 500;
+    }
+    
+    .progress-container { margin-bottom: 40px; }
+    
+    .progress-bar {
+      height: 8px;
+      background: #e9ecef;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #2d5016 0%, #90c695 100%);
+      transition: width 0.3s ease;
+      width: 20%;
+    }
+    
+    .progress-text { text-align: center; color: #6c757d; font-size: 0.9rem; }
+    
+    .form-section {
+      background: white;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+      display: none;
+    }
+    
+    .form-section.active { display: block; }
+    .form-section h2 { margin-bottom: 10px; color: #2d5016; }
+    .form-section h3 { color: #2d5016; margin-top: 30px; margin-bottom: 15px; font-size: 1.3rem; }
+    .section-description { color: #6c757d; margin-bottom: 30px; }
+    
+    .form-group { margin-bottom: 25px; }
+    .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #1a1a1a; }
+    .required { color: #f97316; }
+    
+    .form-group input[type="text"],
+    .form-group input[type="number"],
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #2d5016;
+      box-shadow: 0 0 0 3px rgba(45, 80, 22, 0.1);
+    }
+    
+    .help-text { display: block; margin-top: 6px; font-size: 0.875rem; color: #6c757d; }
+    
+    .checkbox-group label,
+    .radio-group label {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      font-weight: normal;
+      cursor: pointer;
+    }
+    
+    .checkbox-group input[type="checkbox"],
+    .radio-group input[type="radio"] {
+      margin-right: 10px;
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: #2d5016;
+    }
+    
+    .conditional-field {
+      margin-left: 20px;
+      padding-left: 20px;
+      border-left: 3px solid #90c695;
+      display: none;
+      margin-top: 15px;
+    }
+    
+    .conditional-field.active { display: block; }
+    
+    .wizard-nav {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+    }
+    
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.2s;
+    }
+    
+    .btn-secondary:hover { background: #5a6268; }
+    
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2rem; }
+      .tagline { font-size: 1.2rem; }
+      .info-cards { grid-template-columns: 1fr; }
+      .form-section { padding: 20px; }
+    }
+/* Mobile improvements for results page */
+    @media (max-width: 768px) {
+      #results-page .page-container > div {
+        padding: 20px !important;
+      }
+      
+      #results-page h1 {
+        font-size: 1.8rem !important;
+      }
+      
+      #results-page h2 {
+        font-size: 2rem !important;
+      }
+      
+      #results-page h3 {
+        font-size: 1.2rem !important;
+      }
+      
+      /* Stack scope cards vertically */
+      #results-page [style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+      }
+      
+      /* Make buttons stack */
+      #results-page [style*="margin-top: 40px"] button {
+        width: 100%;
+        margin-bottom: 10px;
+        margin-right: 0 !important;
+      }
+      
+      /* Responsive table */
+      #methodology-page table {
+        font-size: 0.8rem !important;
+      }
+      
+      #methodology-page td,
+      #methodology-page th {
+        padding: 5px !important;
+      }
+      
+      /* Charts on mobile */
+      canvas {
+        max-height: 300px !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="landing-page" class="page-container">
+    <header class="hero">
+      <h1>GBB Strategy<br>Directional Emissions Tool</h1>
+      <p class="tagline">High level corporate footprint estimate</p>
+      <button id="start-btn" class="btn-primary">Start Assessment</button>
+<div style="margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.15); border-radius: 8px; max-width: 700px; margin-left: auto; margin-right: auto;">
+          <p style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+            <strong>Important:</strong> This tool provides screening-level estimates for strategic planning and sense-check purposes. Results are not suitable for regulatory reporting or public disclosure without verification by a qualified third party.
+          </p>
+        </div>
+    </header>
+    <section class="info-cards">
+      <div class="info-card">
+        <h3>Hey!</h3>
+      </div>
+    </section>
+  </div>
+
+  <div id="form-wizard" class="wizard-container hidden">
+    <div class="warning-banner">
+      ⚠️ Your data is saved in this browser session only. Download your report when complete.
+    </div>
+    
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <div class="progress-text" id="progress-text">Section 1 of 5</div>
+    </div>
+    
+    <form id="assessment-form">
+      
+      <!-- SECTION 1: COMPANY BASICS -->
+      <div class="form-section active" data-section="1">
+        <h2>Company Basics</h2>
+        <p class="section-description">Tell us about your organization</p>
+        
+        <div class="form-group">
+          <label for="revenue">Annual Revenue (USD) <span class="required">*</span></label>
+          <input type="text" id="revenue" name="revenue" required class="currency-input">
+          <span class="help-text">Enter your total annual revenue in USD</span>
+        </div>
+        
+        <div class="form-group">
+          <label for="industry">Industry Sector <span class="required">*</span></label>
+          <select id="industry" name="industry" required>
+            <option value="">Select...</option>
+            <option value="tech_software">Technology & Software</option>
+            <option value="financial_services">Financial Services & Insurance</option>
+            <option value="professional_services">Professional Services</option>
+            <option value="healthcare">Healthcare & Life Sciences</option>
+            <option value="retail">Retail & E-commerce</option>
+            <option value="food_beverage">Food & Beverage Production</option>
+            <option value="hospitality">Restaurant & Hospitality</option>
+            <option value="manufacturing_electronics">Manufacturing - Electronics</option>
+            <option value="manufacturing_machinery">Manufacturing - Machinery</option>
+            <option value="manufacturing_consumer">Manufacturing - Consumer Goods</option>
+            <option value="construction">Construction & Real Estate</option>
+            <option value="transportation">Transportation & Logistics</option>
+            <option value="energy_utilities">Energy & Utilities</option>
+            <option value="telecommunications">Telecommunications</option>
+            <option value="education">Education</option>
+            <option value="agriculture">Agriculture</option>
+            <option value="pharmaceuticals">Pharmaceuticals</option>
+            <option value="automotive">Automotive</option>
+            <option value="aerospace">Aerospace & Defense</option>
+            <option value="media">Media & Entertainment</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="employees">Number of Employees <span class="required">*</span></label>
+          <input type="text" id="employees" name="employees" required class="number-input">
+          <span class="help-text">Full-time equivalent (FTE) employees</span>
+        </div>
+        
+        <div class="form-group">
+          <label for="primaryRegion">Primary Operating Region <span class="required">*</span></label>
+          <select id="primaryRegion" name="primaryRegion" required>
+            <option value="">Select...</option>
+            <option value="North America">North America</option>
+            <option value="Europe">Europe</option>
+            <option value="Asia">Asia</option>
+            <option value="South America">South America</option>
+            <option value="Africa">Africa</option>
+            <option value="Oceania">Oceania</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="hqCountry">Headquarters Country <span class="required">*</span></label>
+      <select id="hqCountry" name="hqCountry" required>
+            <option value="">Select...</option>
+            <option value="US">United States</option>
+            <option value="CN">China</option>
+            <option value="JP">Japan</option>
+            <option value="DE">Germany</option>
+            <option value="IN">India</option>
+            <option value="GB">United Kingdom</option>
+            <option value="FR">France</option>
+            <option value="IT">Italy</option>
+            <option value="BR">Brazil</option>
+            <option value="CA">Canada</option>
+            <option value="KR">South Korea</option>
+            <option value="RU">Russia</option>
+            <option value="AU">Australia</option>
+            <option value="ES">Spain</option>
+            <option value="MX">Mexico</option>
+            <option value="ID">Indonesia</option>
+            <option value="SA">Saudi Arabia</option>
+            <option value="TR">Turkey</option>
+            <option value="AR">Argentina</option>
+            <option value="ZA">South Africa</option>
+          </select>
+        </div>
+      </div>
+      
+      <!-- SECTION 2: OPERATIONS -->
+      <div class="form-section" data-section="2">
+        <h2>Operations</h2>
+        <p class="section-description">Tell us about your facilities and operations</p>
+        
+        <h3>Building Square Footage by Type</h3>
+        <p class="help-text" style="margin-bottom: 20px;">Enter square footage for each type of space you occupy (leave blank if not applicable)</p>
+        
+        <div class="form-group">
+          <label for="sqft_office">Office Space (sqft)</label>
+          <input type="text" id="sqft_office" name="sqft_office" class="number-input">
+          <span class="help-text">Standard office, coworking, administrative space</span>
+        </div>
+        
+        <div class="form-group">
+          <label for="sqft_warehouse">Warehouse Space (sqft)</label>
+          <input type="text" id="sqft_warehouse" name="sqft_warehouse" class="number-input">
+          <span class="help-text">Storage, distribution centers, fulfillment</span>
+        </div>
+        
+        <div class="form-group">
+          <label for="sqft_retail">Retail Space (sqft)</label>
+          <input type="text" id="sqft_retail" name="sqft_retail" class="number-input">
+          <span class="help-text">Storefronts, showrooms, customer-facing spaces</span>
+        </div>
+        
+        <div class="form-group">
+          <label for="sqft_mfg_light">Light Manufacturing Space (sqft)</label>
+          <input type="text" id="sqft_mfg_light" name="sqft_mfg_light" class="number-input">
+          <span class="help-text">Assembly, light production, electronics manufacturing</span>
+        </div>
+        
+        <div class="form-group">
+          <label for="sqft_mfg_heavy">Heavy Manufacturing Space (sqft)</label>
+          <input type="text" id="sqft_mfg_heavy" name="sqft_mfg_heavy" class="number-input">
+          <span class="help-text">Heavy industrial, chemicals, metals, high-energy processes</span>
+        </div>
+        
+        <h3 style="margin-top: 40px;">Climate Control</h3>
+        
+        <div class="form-group">
+          <label>Building Climate Control</label>
+          <div class="checkbox-group">
+            <label>
+              <input type="checkbox" name="hvac_heating" id="hvac_heating">
+              Heating
+            </label>
+            <label>
+              <input type="checkbox" name="hvac_cooling" id="hvac_cooling">
+              Air Conditioning
+            </label>
+          </div>
+        </div>
+        
+        <div class="conditional-field" id="heating-details">
+          <div class="form-group">
+            <label for="heatingSource">Primary Heating Source</label>
+            <select id="heatingSource" name="heatingSource">
+              <option value="">Select...</option>
+              <option value="natural_gas">Natural Gas</option>
+              <option value="electric">Electric</option>
+              <option value="oil">Heating Oil</option>
+              <option value="propane">Propane</option>
+              <option value="dont_know">Don't Know</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="conditional-field" id="cooling-details">
+          <div class="form-group">
+            <label for="coolingIntensity">Cooling Intensity</label>
+            <select id="coolingIntensity" name="coolingIntensity">
+              <option value="low">Low (minimal AC)</option>
+              <option value="moderate">Moderate (standard office)</option>
+              <option value="high">High (data center, lab)</option>
+            </select>
+          </div>
+        </div>
+        
+        <h3 style="margin-top: 40px;">Vehicle Fleet</h3>
+        
+        <div class="form-group">
+          <label>Do you operate a vehicle fleet?</label>
+          <div class="radio-group">
+            <label>
+              <input type="radio" name="hasFleet" value="yes" id="hasFleet-yes">
+              Yes
+            </label>
+            <label>
+              <input type="radio" name="hasFleet" value="no" id="hasFleet-no" checked>
+              No
+            </label>
+          </div>
+        </div>
+        
+        <div class="conditional-field" id="fleet-details">
+          <div class="form-group">
+            <label for="numVehicles">Number of Vehicles</label>
+            <input type="text" id="numVehicles" name="numVehicles" class="number-input">
+          </div>
+          
+          <div class="form-group">
+            <label for="fleetElectricPercent">What % of fleet is electric?</label>
+            <input type="number" id="fleetElectricPercent" name="fleetElectricPercent" min="0" max="100" value="0">
+            <span class="help-text">Remaining % assumed to be gas/diesel (ICE)</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- SECTION 3: SUPPLY CHAIN -->
+      <div class="form-section" data-section="3">
+        <h2>Supply Chain</h2>
+        <p class="section-description">Tell us about your purchasing and products</p>
+        
+        <h3>Annual Spending</h3>
+        
+        <div class="form-group">
+          <label for="rawMaterials">Raw Materials & Components (USD)</label>
+          <input type="text" id="rawMaterials" name="rawMaterials" class="currency-input">
+          <span class="help-text">Materials used in products</span>
+        </div>
+        
+        <div class="form-group">
+          <label for="services">Professional Services (USD)</label>
+          <input type="text" id="services" name="services" class="currency-input">
+          <span class="help-text">Consulting, IT, legal, etc.</span>
+        </div>
+        
+        <div class="form-group">
+          <label for="capitalEquipment">Capital Equipment (USD)</label>
+          <input type="text" id="capitalEquipment" name="capitalEquipment" class="currency-input">
+          <span class="help-text">Machinery, computers, furniture</span>
+        </div>
+        
+        <h3>Supplier Geography</h3>
+        
+        <div class="form-group">
+          <label>Where are your suppliers located? (check all that apply)</label>
+          <div class="checkbox-group">
+            <label>
+              <input type="checkbox" name="supplier_domestic" id="supplier_domestic">
+              Domestic (same country)
+            </label>
+            <label>
+              <input type="checkbox" name="supplier_regional" id="supplier_regional">
+              Regional (neighboring countries)
+            </label>
+            <label>
+              <input type="checkbox" name="supplier_international" id="supplier_international">
+              International (overseas)
+            </label>
+          </div>
+        </div>
+        
+        <h3>Product Distribution (Downstream)</h3>
+        
+        <div class="form-group">
+          <label for="annualShipments">Annual Shipments to Customers</label>
+          <input type="text" id="annualShipments" name="annualShipments" class="number-input">
+          <span class="help-text">Number of packages/shipments sent per year</span>
+        </div>
+        
+        <div class="form-group">
+          <label for="distributionMethod">Primary Distribution Distance</label>
+          <select id="distributionMethod" name="distributionMethod">
+            <option value="">Select...</option>
+            <option value="local">Local (same city/region)</option>
+            <option value="regional">Regional (same country)</option>
+            <option value="national">National</option>
+            <option value="international">International</option>
+          </select>
+        </div>
+        
+        <h3>Use of Sold Products</h3>
+        
+        <div class="form-group">
+          <label for="productType">Do your products use energy during their lifetime?</label>
+          <select id="productType" name="productType">
+            <option value="">Not applicable / Don't sell products</option>
+            <option value="electric_devices">Yes - Electric devices (appliances, electronics)</option>
+            <option value="fuel_consuming">Yes - Fuel-consuming (vehicles, generators)</option>
+            <option value="indirect">Indirect energy use (food, clothing)</option>
+          </select>
+        </div>
+        
+        <div class="conditional-field" id="product-use-details">
+          <div class="form-group">
+            <label for="annualUnitsSold">Annual Units Sold</label>
+            <input type="text" id="annualUnitsSold" name="annualUnitsSold" class="number-input">
+          </div>
+          
+          <div class="form-group">
+            <label for="avgLifetime">Average Product Lifetime (years)</label>
+            <input type="number" id="avgLifetime" name="avgLifetime" min="0" step="0.5">
+          </div>
+          
+          <div class="form-group">
+            <label for="energyIntensity">Energy Intensity</label>
+            <select id="energyIntensity" name="energyIntensity">
+              <option value="low">Low (phones, small electronics)</option>
+              <option value="medium">Medium (laptops, TVs)</option>
+              <option value="high">High (refrigerators, HVAC systems)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      
+      <!-- SECTION 4: TRAVEL -->
+      <div class="form-section" data-section="4">
+        <h2>Travel & Commuting</h2>
+        <p class="section-description">Optional: Provide details if available</p>
+        
+        <div class="form-group">
+          <label for="travelBudget">Annual Business Travel Budget (USD)</label>
+          <input type="text" id="travelBudget" name="travelBudget" class="currency-input">
+          <span class="help-text">Flights, hotels, rental cars</span>
+        </div>
+        
+        <div class="form-group">
+          <label for="remoteWorkPercent">What % of employees work remotely?</label>
+          <input type="number" id="remoteWorkPercent" name="remoteWorkPercent" min="0" max="100" value="0">
+        </div>
+      </div>
+      
+      <!-- SECTION 5: ENERGY -->
+      <div class="form-section" data-section="5">
+        <h2>Energy & Additional</h2>
+        <p class="section-description">Optional: Help improve accuracy</p>
+        
+        <div class="form-group">
+          <label>Do you purchase renewable energy?</label>
+          <div class="radio-group">
+            <label>
+              <input type="radio" name="renewableEnergy" value="yes" id="renewable-yes">
+              Yes
+            </label>
+            <label>
+              <input type="radio" name="renewableEnergy" value="no" id="renewable-no" checked>
+              No
+            </label>
+          </div>
+        </div>
+        
+        <div class="conditional-field" id="renewable-details">
+          <div class="form-group">
+            <label for="renewablePercent">What % of electricity is renewable?</label>
+            <input type="number" id="renewablePercent" name="renewablePercent" min="0" max="100">
+          </div>
+        </div>
+      </div>
+      
+    </form>
+    
+    <div class="wizard-nav">
+      <button type="button" id="back-btn" class="btn-secondary" style="display:none;">
+        ← Back
+      </button>
+      <button type="button" id="continue-btn" class="btn-primary">
+        Continue →
+      </button>
+    </div>
+  </div>
+
+  <script>
+    let currentSection = 1;
+    const totalSections = 5;
+    
+    // Number formatting
+    function formatNumber(n) {
+      return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+    
+    function unformatNumber(n) {
+      return n.replace(/,/g, '');
+    }
+    
+    // Add formatting to currency inputs
+    document.querySelectorAll('.currency-input, .number-input').forEach(input => {
+      input.addEventListener('input', function(e) {
+        let value = unformatNumber(this.value);
+        if (!isNaN(value) && value !== '') {
+          this.value = formatNumber(value);
+        }
+      });
+      
+      input.addEventListener('blur', function() {
+        let value = unformatNumber(this.value);
+        if (!isNaN(value) && value !== '') {
+          this.value = formatNumber(value);
+        }
+      });
+    });
+    
+    document.getElementById('start-btn').addEventListener('click', function() {
+      document.getElementById('landing-page').classList.add('hidden');
+      document.getElementById('form-wizard').classList.remove('hidden');
+    });
+    
+    document.getElementById('continue-btn').addEventListener('click', function() {
+      if (currentSection < totalSections) {
+        document.querySelector(`[data-section="${currentSection}"]`).classList.remove('active');
+        currentSection++;
+        document.querySelector(`[data-section="${currentSection}"]`).classList.add('active');
+        updateProgress();
+        updateNavigation();
+        window.scrollTo(0, 0);
+      } else {
+      if (validateForm()) {
+          const formData = collectFormData();
+          calculateAndShowResults(formData);
+        }
+      }
+    });
+    
+    document.getElementById('back-btn').addEventListener('click', function() {
+      if (currentSection > 1) {
+        document.querySelector(`[data-section="${currentSection}"]`).classList.remove('active');
+        currentSection--;
+        document.querySelector(`[data-section="${currentSection}"]`).classList.add('active');
+        updateProgress();
+        updateNavigation();
+        window.scrollTo(0, 0);
+      }
+    });
+    
+    function updateProgress() {
+      const percent = (currentSection / totalSections) * 100;
+      document.getElementById('progress-fill').style.width = percent + '%';
+      document.getElementById('progress-text').textContent = `Section ${currentSection} of ${totalSections}`;
+    }
+    
+    function updateNavigation() {
+      const backBtn = document.getElementById('back-btn');
+      const continueBtn = document.getElementById('continue-btn');
+      
+      backBtn.style.display = currentSection === 1 ? 'none' : 'block';
+      continueBtn.textContent = currentSection === totalSections ? 'Calculate Results' : 'Continue →';
+    }
+    
+    // Conditional fields
+    document.getElementById('hvac_heating').addEventListener('change', function() {
+      document.getElementById('heating-details').classList.toggle('active', this.checked);
+    });
+    
+    document.getElementById('hvac_cooling').addEventListener('change', function() {
+      document.getElementById('cooling-details').classList.toggle('active', this.checked);
+    });
+    
+    document.getElementById('hasFleet-yes').addEventListener('change', function() {
+      document.getElementById('fleet-details').classList.toggle('active', this.checked);
+    });
+    
+    document.getElementById('renewable-yes').addEventListener('change', function() {
+      document.getElementById('renewable-details').classList.toggle('active', this.checked);
+    });
+    
+    document.getElementById('productType').addEventListener('change', function() {
+      document.getElementById('product-use-details').classList.toggle('active', this.value !== '');
+    });
+  </script>
+<!-- Chart.js Library -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- Chart.js Library -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  
+  <!-- jsPDF Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- Our Scripts -->
+  <script src="src/js/data/emissionFactors.js"></script>
+  <script src="src/js/calculations.js"></script>
+  <script src="src/js/formHandler.js"></script>
+  <script src="src/js/sessionStorage.js"></script>
+  <script src="src/js/resultsDisplay.js"></script>
+</body>
+</html>
+<script src="src/js/data/emissionFactors.js"></script>
+  <script src="src/js/calculations.js"></script>
+  <script src="src/js/formHandler.js"></script>
+<script src="src/js/resultsDisplay.js"></script>
+<script src="src/js/pdfExport.js"></script>
+<script src="src/js/methodology.js"></script>
+  <script src="src/js/sources.js"></script>
+</body>
+</html>
