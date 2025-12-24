@@ -1,13 +1,11 @@
 // sessionStorage.js - Save and restore form data
 
-// Save form data to session storage
 function saveFormData() {
   const formData = collectFormData();
   sessionStorage.setItem('carbonCalcFormData', JSON.stringify(formData));
   console.log('Form data saved to session storage');
 }
 
-// Restore form data from session storage
 function restoreFormData() {
   const savedData = sessionStorage.getItem('carbonCalcFormData');
   if (!savedData) {
@@ -18,7 +16,6 @@ function restoreFormData() {
   console.log('Restoring form data from session storage...');
   const formData = JSON.parse(savedData);
   
-  // Restore company basics
   if (formData.companyBasics) {
     setInputValue('revenue', formData.companyBasics.revenue);
     setInputValue('industry', formData.companyBasics.industry);
@@ -27,7 +24,6 @@ function restoreFormData() {
     setInputValue('hqCountry', formData.companyBasics.hqCountry);
   }
   
-  // Restore operations
   if (formData.operations) {
     if (formData.operations.squareFootage) {
       setInputValue('sqft_office', formData.operations.squareFootage.office);
@@ -51,7 +47,6 @@ function restoreFormData() {
     }
   }
   
-  // Restore supply chain
   if (formData.supplyChain) {
     if (formData.supplyChain.purchasedGoods) {
       setInputValue('rawMaterials', formData.supplyChain.purchasedGoods.rawMaterials);
@@ -78,5 +73,81 @@ function restoreFormData() {
     }
   }
   
-  // Restore travel
-  if (form
+  if (formData.travel) {
+    setInputValue('travelBudget', formData.travel.travelBudget);
+    setInputValue('remoteWorkPercent', formData.travel.remoteWorkPercent);
+  }
+  
+  if (formData.energy && formData.energy.renewableEnergy) {
+    setRadio('renewableEnergy', formData.energy.renewableEnergy.purchases ? 'yes' : 'no');
+    setInputValue('renewablePercent', formData.energy.renewableEnergy.percent);
+  }
+  
+  console.log('Form data restored successfully');
+}
+
+function setInputValue(id, value) {
+  const el = document.getElementById(id);
+  if (el && value !== null && value !== undefined) {
+    el.value = value;
+    el.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+}
+
+function setCheckbox(id, checked) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.checked = !!checked;
+    el.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+}
+
+function setRadio(name, value) {
+  const el = document.querySelector(`input[name="${name}"][value="${value}"]`);
+  if (el) {
+    el.checked = true;
+    el.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+}
+
+function clearSavedFormData() {
+  sessionStorage.removeItem('carbonCalcFormData');
+  console.log('Saved form data cleared');
+}
+
+function initAutoSave() {
+  const form = document.getElementById('assessment-form');
+  if (form) {
+    form.addEventListener('change', () => {
+      saveFormData();
+    });
+    
+    form.addEventListener('input', debounce(() => {
+      saveFormData();
+    }, 1000));
+  }
+}
+
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const startBtn = document.getElementById('start-btn');
+  if (startBtn) {
+    startBtn.addEventListener('click', () => {
+      setTimeout(() => {
+        restoreFormData();
+        initAutoSave();
+      }, 100);
+    });
+  }
+});

@@ -244,21 +244,22 @@
   </style>
 </head>
 <body>
+  
+  <!-- Logo in top right corner -->
+  <div style="position: fixed; top: 20px; right: 20px; z-index: 9999;">
+    <img src="logogreen.png" alt="GBB Strategy" style="height: 60px; width: auto;">
+  </div>
 
   <div id="landing-page" class="page-container">
     <header class="hero">
       <h1>GBB Strategy<br>Directional Emissions Tool</h1>
-      <p class="tagline">High level corporate footprint estimate</p>
+      <p class="tagline">High level corporate emissions estimator</p>
       <button id="start-btn" class="btn-primary">Start Assessment</button>
-<div style="margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.15); border-radius: 8px; max-width: 700px; margin-left: auto; margin-right: auto;">
-          <p style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
-            <strong>Important:</strong> This tool provides screening-level estimates for strategic planning and sense-check purposes. Results are not suitable for regulatory reporting or public disclosure without verification by a qualified third party.
-          </p>
-        </div>
     </header>
     <section class="info-cards">
       <div class="info-card">
-        <h3>Hey!</h3>
+        <h3></h3>
+        <p>GBB cannot see any provided data</p>
       </div>
     </section>
   </div>
@@ -329,7 +330,8 @@
             <option value="Europe">Europe</option>
             <option value="Asia">Asia</option>
             <option value="South America">South America</option>
-            <option value="Africa">Africa</option>
+           <option value="Africa">Africa</option>
+            <option value="Middle East">Middle East</option>
             <option value="Oceania">Oceania</option>
           </select>
         </div>
@@ -660,7 +662,10 @@
       document.getElementById('form-wizard').classList.remove('hidden');
     });
     
-    document.getElementById('continue-btn').addEventListener('click', function() {
+document.getElementById('continue-btn').addEventListener('click', function() {
+      if (!validatePercentages()) {
+        return;
+      }
       if (currentSection < totalSections) {
         document.querySelector(`[data-section="${currentSection}"]`).classList.remove('active');
         currentSection++;
@@ -718,9 +723,42 @@
       document.getElementById('renewable-details').classList.toggle('active', this.checked);
     });
     
-    document.getElementById('productType').addEventListener('change', function() {
+document.getElementById('productType').addEventListener('change', function() {
       document.getElementById('product-use-details').classList.toggle('active', this.value !== '');
     });
+    
+    // Validate percentage fields
+    function validatePercentages() {
+      const percentFields = [
+        { id: 'fleetElectricPercent', name: 'Fleet electric percentage' },
+        { id: 'remoteWorkPercent', name: 'Remote work percentage' },
+        { id: 'renewablePercent', name: 'Renewable energy percentage' }
+      ];
+      
+      const errors = [];
+      
+      percentFields.forEach(field => {
+        const el = document.getElementById(field.id);
+        if (el && el.value !== '') {
+          const val = parseFloat(el.value);
+          if (isNaN(val) || val < 0 || val > 100) {
+            errors.push(field.name);
+            el.style.borderColor = '#f97316';
+            el.style.borderWidth = '2px';
+          } else {
+            el.style.borderColor = '';
+            el.style.borderWidth = '';
+          }
+        }
+      });
+      
+      if (errors.length > 0) {
+        alert('Please enter values between 0-100 for:\n' + errors.join('\n'));
+        return false;
+      }
+      
+      return true;
+    }
   </script>
 <!-- Chart.js Library -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -733,7 +771,6 @@
   <script src="src/js/data/emissionFactors.js"></script>
   <script src="src/js/calculations.js"></script>
   <script src="src/js/formHandler.js"></script>
-  <script src="src/js/sessionStorage.js"></script>
   <script src="src/js/resultsDisplay.js"></script>
 </body>
 </html>

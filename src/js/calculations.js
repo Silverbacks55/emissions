@@ -76,7 +76,7 @@ function calculateScope1(formData, factors, assumptions) {
       
       if (region === 'North America' || region === 'Europe') {
         heatingIntensity = 0.8;
-      } else if (region === 'South America' || region === 'Africa') {
+   } else if (region === 'South America' || region === 'Africa' || region === 'Middle East') {
         heatingIntensity = 0.2;
       }
       

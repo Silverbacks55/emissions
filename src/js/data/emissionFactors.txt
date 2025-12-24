@@ -304,13 +304,15 @@ const EMISSION_FACTORS = {
       "upstream": 2.04,
       "source": "EPA 2025"
     },
-    "heating_oil": {
+"heating_oil": {
       "combustion": 10.15,
+      "combustionPerTherm": 10.15,
       "upstream": 2.03,
       "source": "EPA 2025"
     },
-    "propane": {
+"propane": {
       "combustion": 5.74,
+      "combustionPerTherm": 5.74,
       "upstream": 1.15,
       "source": "EPA 2025"
     }
