@@ -781,5 +781,20 @@ document.getElementById('productType').addEventListener('change', function() {
 <script src="src/js/pdfExport.js"></script>
 <script src="src/js/methodology.js"></script>
   <script src="src/js/sources.js"></script>
+<!-- Send height to parent iframe -->
+  <script>
+    function sendHeight() {
+      const height = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight
+      );
+      window.parent.postMessage({ height: height }, '*');
+    }
+    
+    // Send height on load and whenever content changes
+    window.addEventListener('load', sendHeight);
+    setInterval(sendHeight, 500); // Check every 500ms
+  </script>
 </body>
+
 </html>
