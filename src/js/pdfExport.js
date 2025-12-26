@@ -28,7 +28,8 @@ const pageHeight = doc.internal.pageSize.height;
   doc.addImage(logoData, 'PNG', (pageWidth - logoWidth) / 2, yPos, logoWidth, logoHeight);
   yPos += 20;
   
-  doc.setFontSize(16);
+doc.setFont('times');  
+doc.setFontSize(16);
   doc.setTextColor(...black);
   doc.text('Directional Emissions Estimate', pageWidth / 2, yPos, { align: 'center' });
   yPos += 10;

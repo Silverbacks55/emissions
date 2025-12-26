@@ -146,8 +146,8 @@ function showResultsPage(results, formData) {
 </div>
         <h3 style="color: #2d5016; margin-top: 30px; margin-bottom: 15px;">Industry Comparison</h3>
         <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
-          <p><strong>Your Company:</strong> ${results.industryComparison.companyTotal} tCO₂e</p>
-          <p><strong>Industry Average:</strong> ${results.industryComparison.industryAverage} tCO₂e</p>
+      <p><strong>Your Company:</strong> ${results.industryComparison.companyTotal.toLocaleString()} tCO₂e</p>
+<p><strong>Industry Average:</strong> ${results.industryComparison.industryAverage.toLocaleString()} tCO₂e</p>
           <p><strong>Variance:</strong> ${results.industryComparison.variance.toLocaleString()}% (${results.industryComparison.interpretation})</p>
         </div>
         
