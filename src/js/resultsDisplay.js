@@ -156,7 +156,7 @@ function showResultsPage(results, formData) {
         
   <div style="margin-top: 40px;">
           <button onclick="window.location.reload()" style="background: #2d5016; color: white; padding: 12px 30px; border: none; border-radius: 6px; cursor: pointer; font-size: 1rem; margin-right: 10px;">Start New Assessment</button>
-          <button onclick="generatePDFReport(window.lastResults, window.lastFormData)" style="background: #ffc107; color: #1a1a1a; padding: 12px 30px; border: none; border-radius: 6px; cursor: pointer; font-size: 1rem; margin-right: 10px;">Download PDF Report</button>
+        <button id="pdfDownloadBtn" onclick="handlePDFDownload()" style="background: #ffc107; color: #1a1a1a; padding: 12px 30px; border: none; border-radius: 6px; cursor: pointer; font-size: 1rem; margin-right: 10px;">Download PDF Report</button>
 <button onclick="showMethodologyPage(window.lastResults)" style="background: #6c757d; color: white; padding: 12px 30px; border: none; border-radius: 6px; cursor: pointer; font-size: 1rem; margin-right: 10px;">View Methodology</button>
           <button onclick="showSourcesPage()" style="background: #6c757d; color: white; padding: 12px 30px; border: none; border-radius: 6px; cursor: pointer; font-size: 1rem;">View Sources</button>
         </div>
@@ -337,4 +337,29 @@ function hideLoadingState() {
   if (overlay) {
     overlay.remove();
   }
+}
+function handlePDFDownload() {
+  const btn = document.getElementById('pdfDownloadBtn');
+  const originalText = btn.textContent;
+  
+  // Show loading state
+  btn.textContent = 'Generating PDF...';
+  btn.disabled = true;
+  btn.style.opacity = '0.7';
+  btn.style.cursor = 'wait';
+  
+  // Use setTimeout to allow UI to update before heavy PDF generation
+  setTimeout(() => {
+    try {
+      generatePDFReport(window.lastResults, window.lastFormData);
+    } finally {
+      // Reset button state after a short delay
+      setTimeout(() => {
+        btn.textContent = originalText;
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.style.cursor = 'pointer';
+      }, 1000);
+    }
+  }, 100);
 }

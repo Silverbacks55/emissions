@@ -11,6 +11,34 @@
   <link href="https://fonts.googleapis.com/css2?family=Sorts+Mill+Goudy:ital@0;1&display=swap" rel="stylesheet">
   <title>Directional Emissions Tool</title>
   <style>
+/* Logo styling */
+#header-logo {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+#header-logo img {
+  height: 60px;
+  width: auto;
+}
+
+/* Mobile logo adjustments */
+@media (max-width: 768px) {
+  #header-logo {
+    position: relative;
+    top: 0;
+    right: 0;
+    text-align: center;
+    padding: 15px 0;
+    background: white;
+  }
+  
+  #header-logo img {
+    height: 40px;
+  }
+}
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
     body {
@@ -291,9 +319,9 @@
 <body>
   
   <!-- Logo in top right corner -->
-  <div style="position: fixed; top: 20px; right: 20px; z-index: 9999;">
-    <img src="logogreen.png" alt="GBB Strategy" style="height: 60px; width: auto;">
-  </div>
+<div id="header-logo">
+  <img src="logogreen.png" alt="GBB Strategy">
+</div>
 
   <div id="landing-page" class="page-container">
     <header class="hero">
