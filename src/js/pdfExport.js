@@ -35,6 +35,7 @@ const pageHeight = doc.internal.pageSize.height;
 
   
   // EXECUTIVE SUMMARY
+doc.setFont('times');
 doc.setFontSize(16);
 doc.setTextColor(...forestGreen);
 yPos += 10;  // Add this line for extra space
@@ -54,7 +55,8 @@ yPos += 10;
   // Total emissions box
   doc.setFillColor(248, 249, 250);
   doc.rect(leftMargin, yPos, pageWidth, 25, 'F');
-  doc.setFontSize(20);
+doc.setFont('times');  
+doc.setFontSize(20);
   doc.setTextColor(...forestGreen);
   doc.text(`${results.summary.total.toLocaleString()} tCO₂e`, leftMargin + 5, yPos + 10);
   doc.setFontSize(10);
@@ -107,7 +109,8 @@ yPos += 10;
   checkPageBreak(80);
   
   // SCOPE 3 BREAKDOWN
-  doc.setFontSize(14);
+doc.setFont('times');  
+doc.setFontSize(14);
   doc.setTextColor(...forestGreen);
   doc.text('Scope 3 Breakdown by Category', leftMargin, yPos);
   yPos += 10;
@@ -168,7 +171,8 @@ scope3Categories.forEach((cat, index) => {
   checkPageBreak(30);
   
   // CONFIDENCE SCORE
-  doc.setFontSize(14);
+doc.setFont('times');  
+doc.setFontSize(14);
   doc.setTextColor(...forestGreen);
   doc.text('Data Confidence', leftMargin, yPos);
   yPos += 10;

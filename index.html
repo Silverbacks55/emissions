@@ -571,49 +571,43 @@
         </div>
       </div>
       
-      <!-- SECTION 4: TRAVEL -->
-      <div class="form-section" data-section="4">
-        <h2>Travel & Commuting</h2>
-        <p class="section-description">Optional: Provide details if available</p>
-        
-        <div class="form-group">
-          <label for="travelBudget">Annual Business Travel Budget (USD)</label>
-          <input type="text" id="travelBudget" name="travelBudget" class="currency-input">
-          <span class="help-text">Flights, hotels, rental cars</span>
-        </div>
-        
-        <div class="form-group">
-          <label for="remoteWorkPercent">What % of employees work remotely?</label>
-          <input type="number" id="remoteWorkPercent" name="remoteWorkPercent" min="0" max="100" value="0">
-        </div>
-      </div>
-      
-      <!-- SECTION 5: ENERGY -->
-      <div class="form-section" data-section="5">
-        <h2>Energy & Additional</h2>
-        <p class="section-description">Optional: Help improve accuracy</p>
-        
-        <div class="form-group">
-          <label>Do you purchase renewable energy?</label>
-          <div class="radio-group">
-            <label>
-              <input type="radio" name="renewableEnergy" value="yes" id="renewable-yes">
-              Yes
-            </label>
-            <label>
-              <input type="radio" name="renewableEnergy" value="no" id="renewable-no" checked>
-              No
-            </label>
-          </div>
-        </div>
-        
-        <div class="conditional-field" id="renewable-details">
-          <div class="form-group">
-            <label for="renewablePercent">What % of electricity is renewable?</label>
-            <input type="number" id="renewablePercent" name="renewablePercent" min="0" max="100">
-          </div>
-        </div>
-      </div>
+<!-- SECTION 4: TRAVEL & ENERGY -->
+<div class="form-section" data-section="4">
+  <h2>Travel, Commuting & Energy</h2>
+  <p class="section-description">Optional: Provide details if available</p>
+  
+  <div class="form-group">
+    <label for="travelBudget">Annual Business Travel Budget (USD)</label>
+    <input type="text" id="travelBudget" name="travelBudget" class="currency-input">
+    <span class="help-text">Flights, hotels, rental cars</span>
+  </div>
+  
+  <div class="form-group">
+    <label for="remoteWorkPercent">What % of employees work remotely?</label>
+    <input type="number" id="remoteWorkPercent" name="remoteWorkPercent" min="0" max="100" value="0">
+  </div>
+  
+  <div class="form-group">
+    <label>Do you purchase renewable energy?</label>
+    <div class="radio-group">
+      <label>
+        <input type="radio" name="renewableEnergy" value="yes" id="renewable-yes">
+        Yes
+      </label>
+      <label>
+        <input type="radio" name="renewableEnergy" value="no" id="renewable-no" checked>
+        No
+      </label>
+    </div>
+  </div>
+  
+  <div class="conditional-field" id="renewable-details">
+    <div class="form-group">
+      <label for="renewablePercent">What % of electricity is renewable?</label>
+      <input type="number" id="renewablePercent" name="renewablePercent" min="0" max="100">
+    </div>
+  </div>
+</div>
       
     </form>
     
@@ -629,7 +623,7 @@
 
   <script>
     let currentSection = 1;
-    const totalSections = 5;
+    const totalSections = 4;
     
     // Number formatting
     function formatNumber(n) {
