@@ -85,8 +85,7 @@ function showSourcesPage() {
           <li><strong>IPCC (Intergovernmental Panel on Climate Change)</strong> - Climate science and global warming potentials<br>
           <a href="https://www.ipcc.ch/" target="_blank" style="color: #2d5016;">https://www.ipcc.ch</a></li>
           
-          <li><strong>Quantis Scope 3 Evaluator</strong> - Screening-level Scope 3 methodology<br>
-          <a href="https://quantis.com/who-we-guide/our-impact/sustainability-initiatives/scope-3-evaluator/" target="_blank" style="color: #2d5016;">https://quantis.com</a></li>
+         
         </ul>
         
         <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 40px;">
