@@ -11,6 +11,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Sorts+Mill+Goudy:ital@0;1&display=swap" rel="stylesheet">
   <title>Directional Emissions Tool</title>
   <style>
+/* Hide PDF button on mobile */
+@media (max-width: 768px) {
+  #pdfDownloadBtn {
+    display: none !important;
+  }
+  
+  #scope3Breakdown {
+    display: none !important;
+  }
+  
+  #scope3Chart {
+    display: none !important;
+  }
+}
 /* Logo styling */
 #header-logo {
   position: fixed;
@@ -339,7 +353,7 @@
 
   <div id="form-wizard" class="wizard-container hidden">
     <div class="warning-banner">
-      Your data is saved in this browser session only. A PDF download of your results will be available.
+      Your data is saved in this browser session only. In the desktop version there is a PDF download of your results.
     </div>
     
     <div class="progress-container">

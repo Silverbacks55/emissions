@@ -57,7 +57,7 @@ function showResultsPage(results, formData) {
             <p style="font-size: 0.875rem; color: #6c757d;">Value chain</p>
           </div>
         </div>
-        
+<div id="scope3Breakdown">
         <h3 style="color: #2d5016; margin-top: 30px; margin-bottom: 15px;">Intensity Metrics</h3>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
           <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
@@ -132,15 +132,18 @@ function showResultsPage(results, formData) {
           </div>
         </div>
         </div>
+</div>
 <h3 style="color: #2d5016; margin-top: 30px; margin-bottom: 15px;">Emissions by Scope</h3>
         <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 30px; max-width: 500px; margin-left: auto; margin-right: auto;">
           <canvas id="scopePieChart"></canvas>
         </div>
         
-     <h3 style="color: #2d5016; margin-top: 30px; margin-bottom: 15px;">Scope 3 Categories</h3>
+ <div id="scope3Chart">
+<h3 style="color: #2d5016; margin-top: 30px; margin-bottom: 15px;">Scope 3 Categories</h3>
         <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 30px; display: block;">
           <canvas id="scope3BarChart" style="display: block;"></canvas>
         </div>
+</div>
         <h3 style="color: #2d5016; margin-top: 30px; margin-bottom: 15px;">Industry Comparison</h3>
         <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
           <p><strong>Your Company:</strong> ${results.industryComparison.companyTotal} tCO₂e</p>
