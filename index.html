@@ -241,6 +241,51 @@
         max-height: 300px !important;
       }
     }
+/* Custom Alert Modal */
+.custom-alert {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  z-index: 10000;
+  max-width: 500px;
+  width: 90%;
+}
+
+.custom-alert-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 9999;
+}
+
+.custom-alert h3 {
+  margin-top: 0;
+  color: #d32f2f;
+}
+
+.custom-alert button {
+  background: #2d5f2e;
+  color: white;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.custom-alert button:hover {
+  background: #1e4620;
+}
   </style>
 </head>
 <body>
@@ -747,7 +792,7 @@ document.getElementById('productType').addEventListener('change', function() {
       });
       
       if (errors.length > 0) {
-        alert('Please enter values between 0-100 for:\n' + errors.join('\n'));
+      showCustomAlert('Please enter values between 0-100 for: ' + errors.join(', '));
         return false;
       }
       
@@ -789,6 +834,15 @@ document.getElementById('productType').addEventListener('change', function() {
     window.addEventListener('load', sendHeight);
     setInterval(sendHeight, 500); // Check every 500ms
   </script>
+<!-- Custom Alert Modal -->
+<div class="custom-alert-overlay" id="alert-overlay"></div>
+<div class="custom-alert" id="custom-alert">
+  <h3>⚠️ Required Information</h3>
+  <p id="alert-message"></p>
+  <button onclick="closeCustomAlert()">OK</button>
+</div>
+
 </body>
+
 
 </html>

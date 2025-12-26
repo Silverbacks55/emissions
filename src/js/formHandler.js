@@ -121,9 +121,20 @@ function validateForm() {
   }
   
   if (missing.length > 0) {
-    alert('Please fill in all required fields: ' + missing.join(', '));
+ showCustomAlert('Please complete all required fields: ' + missing.join(', '));
     return false;
   }
   
   return true;
+}
+// Custom alert functions
+function showCustomAlert(message) {
+  document.getElementById('alert-message').textContent = message;
+  document.getElementById('alert-overlay').style.display = 'block';
+  document.getElementById('custom-alert').style.display = 'block';
+}
+
+function closeCustomAlert() {
+  document.getElementById('alert-overlay').style.display = 'none';
+  document.getElementById('custom-alert').style.display = 'none';
 }
